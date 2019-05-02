@@ -1,22 +1,19 @@
-\documentclass{article}
-
-\begin{document}
 
 begin with loading package
 
-<< echo=TRUE>>=
+```{r}
 library(readr)
 library(ggplot2)
 library(scales)
 library(dplyr)
-@
+```
 
 
 Code for reading in the dataset and/or processing the data. 
 BE CAREFUL, THIS IS WORKING WITH FRENCH DATE
 
 
-<< echo=TRUE>>=
+```{r}
 setwd("C:/Users/giffonev/Dropbox/TPR/reproducible-research-1")
 
 activity <- read_csv("activity.csv", col_types = cols(steps = col_integer()))
@@ -38,63 +35,63 @@ activity$week <- sapply(activity$date,weekdays)
     }
  }
 activity$week <- as.factor(activity$week)
-@
+```
 
 Histogram of the total number of steps taken each day
 
-<< echo=TRUE >>=
+```{r}
 
 g + geom_bar(stat = "identity") + labs(title = "Histogram of the total number of steps taken each day", x = "day", y = "total step per day") 
 
-@
+```
 
 
 
 Mean and median number of steps taken each day
-<< echo=TRUE >>=
+```{r}
 
 g + stat_summary(fun.y=mean, geom="point", shape=1, size = 1.5, col = "red") + labs(title = "mean number of steps taken each day", x = "day", y = "mean step per day") + scale_x_date(labels = date_format("%m/%d"), breaks = "week") 
 
 g + stat_summary(fun.y=median, geom="point", shape=1, size = 1.5, col = "red") + labs(title = "median number of steps taken each day", x = "day", y = "mean step per day") + scale_x_date(labels = date_format("%m/%d"), breaks = "week") 
 
 
-@
+```
 
 Time series plot of the average number of steps taken
-<< echo=TRUE >>=
+```{r}
 h + stat_summary(fun.y=mean, geom="point", shape=1, size = 1.5, col = "red") + labs(title = "Time series plot of the average number of steps taken", x = "time ", y = "mean step per time series") 
-@
+```
 
 The 5-minute interval that, on average, contains the maximum number of steps
-<< echo=TRUE >>=
+```{r}
 
 test <- tapply(activity$steps,activity$interval,mean, na.rm=TRUE)
 max(test)
-@
+```
 
 Code to describe and show a strategy for imputing missing data
-<< echo=TRUE >>=
+```{r}
 #number of NA : 
 sum(is.na(activity$steps))
 
 #replacing NA with the mean : 
 activity$steps[is.na(activity$steps)] <- mean(activity$steps, na.rm  = TRUE)
 sum(is.na(activity$steps))
-@
+```
 
 Histogram of the total number of steps taken each day after missing values are imputed
-<< echo=TRUE >>=
+```{r}
 j <- ggplot(data=activity,aes(x=activity$date, y=activity$steps))
 j + geom_bar(stat = "identity") + labs(title = "Histogram of the total number of steps taken each day after missing values are imputed", x = "day", y = "total step per day") 
  
-@
+```
 
 Panel plot comparing the average number of steps taken per 5-minute interval across weekdays and weekends
 
-<< echo=TRUE >>=
+```{r}
 k <- ggplot(data=activity,aes( x = activity$date, y=activity$steps, color = activity$week)) 
 k + stat_summary(fun.y=mean, geom="line", size = 1) 
-@
+```
 
 All of the R code needed to reproduce the results (numbers, plots, etc.) in the report
 
@@ -176,9 +173,8 @@ Panel plot comparing the average number of steps taken per 5-minute interval acr
 
 k <- ggplot(data=activity,aes( x = activity$date, y=activity$steps, color = activity$week)) 
 k + stat_summary(fun.y=mean, geom="line", size = 1) 
-@
 
 
 
 
-\end{document}
+
